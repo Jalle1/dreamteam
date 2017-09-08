@@ -173,3 +173,28 @@ app.put('/users/avatar/:id', function(req, res){
 		}
 	);
 });
+
+//JAKOB
+
+//Set status on user
+app.put('/users/status/:id', function(req, res){
+    var id = req.params.id;
+    db.users.findAndModify({
+            query: {_id: mongojs.ObjectId(id)},
+            update: {$set: {status: req.body.status}},
+            new: true },
+        function(err, doc){
+            res.json(doc);
+        }
+    );
+});
+
+
+//JAKOB
+
+// Endpoint for reading status on user
+app.get('/user/status/:name', function(req, res){
+    db.users.findOne({username: req.params.name}, function (err, doc) {
+       res.send("<h2>" + doc.username + "</h2> has status: " + "<h6>" + doc.status + "</h6>");
+    });
+});

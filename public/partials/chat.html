@@ -32,6 +32,13 @@
 										{{ username }}
 									</strong>
 								</h2>
+
+							 
+
+								<h4>{{ status }}</h4><i class="fa fa-wrench" aria-hidden="true" title="Click to change status!" ng-click="inputBox = !inputBox"></i>
+								<input type="text" placeholder="Insert status here" ng-model="input.status" ng-hide="inputBox"><button ng-click="saveStatus();" ng-hide="inputBox">Save</button>
+
+
 							</div>
 						</div>
 						<div class="row">
@@ -57,6 +64,7 @@
 										</td>
 										<td style="width: 70%">
 											<a class="username" ng-click="getPrivateConversation(user._id)">{{ user.username }}</a>
+											<h6><strong>{{ user.status }}</strong></h6>
 										</td>
 										<td>
 											<span ng-class="{'green': user.online, 'red': !user.online}">

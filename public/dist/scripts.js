@@ -56,10 +56,26 @@ app.value('avatars', [
 
 //------------------------------------------------ SIDEBARCONTROLLER -------------------------------------------//
 
-app.controller('sidebarController', ['$scope', '$location', '$sessionStorage', function($scope, $location, $sessionStorage){
+app.controller('sidebarController', ['$scope', '$http', '$location', '$sessionStorage', function($scope, $http, $location, $sessionStorage){
+	$scope.inputBox = true;
 	$scope.username = $sessionStorage.username;
 	$scope.avatar = $sessionStorage.avatar;
+    $scope.status =  $sessionStorage.status;
+
+	$scope.input = {status: ""};
+
+
+    $scope.saveStatus = function () {
+        $http.put('/users/status/'+$sessionStorage.id, $scope.input).then(function () {
+            $sessionStorage.status = $scope.input.status;
+            $scope.status = $scope.input.status;
+        });
+        $scope.inputBox = true;
+    };
+
+
 }]);
+
 
 //------------------------------------------------ CHATCONTROLLER -------------------------------------------//
 
@@ -372,6 +388,7 @@ app.controller('loginController', ['$scope', '$location', '$http', '$sessionStor
 							$sessionStorage.username = response.data[i].username;
 							$sessionStorage.avatar = response.data[i].avatar.src;
 							$sessionStorage.password = response.data[i].password;
+							$sessionStorage.status = response.data[i].status;
 							$http.put('/users/' + $sessionStorage.id);
 							return;
 						} else {
@@ -455,6 +472,7 @@ app.controller('registerController', ['$scope','$location', '$http', 'validation
 	$scope.users = {};
 	$scope.users.avatar = $scope.avatars[10];
 	$scope.users.online = false;
+	$scope.users.status = "Newbie";
 
 	$scope.registerSubmit = function() {
 		$http.post('/users', $scope.users).then(function(response) {
